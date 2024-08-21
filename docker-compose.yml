@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  postgres:
+    image: 'postgres:12'
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    networks:
+      - pg
+
+
+  pgweb:
+    image: 'sosedoff/pgweb'
+    ports:
+     - "8081:8081"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
+    depends_on:
+      - postgres
+    networks:
+      - pg
+
+networks:
+  pg:
+    driver: bridge
